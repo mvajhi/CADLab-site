@@ -15,7 +15,7 @@ FROM base AS dev
 ## Set the working directory to `/opt/docusaurus`.
 WORKDIR /opt/docusaurus
 ## Expose the port that Docusaurus will run on.
-EXPOSE 3000
+EXPOSE 80
 ## Run the development server.
 CMD [ -d "node_modules" ] && yarn start --host 0.0.0.0 --poll 1000 || yarn install && yarn start --host 0.0.0.0 --poll 1000
 
@@ -33,7 +33,7 @@ RUN yarn build
 # Stage 3a: Serve with `docusaurus serve`.
 FROM prod AS serve
 ## Expose the port that Docusaurus will run on.
-EXPOSE 3000
+EXPOSE 80
 ## Run the production server.
 CMD ["yarn", "serve", "--host", "0.0.0.0", "--no-open"]
 

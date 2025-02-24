@@ -1,12 +1,73 @@
-name: "docusaurus"
 services:
+
     dev:
-        build:
-            context: .
-            target: dev
-        ports:
-            - "3000:3000"
+      build:
+        context: .
+        target: dev
+      volumes:
+        - .:/opt/docusaurus
+      environment:
+        - NODE_ENV=development
+      networks:
+        external_net:
+          ipv4_address: 172.20.0.2
+        internal_net:
+          aliases:
+            - cad.ut.ac.ir
+          ipv4_address: 172.29.0.2
+
+    firefox_u1:
+        image: jlesage/firefox
         volumes:
-            - .:/opt/docusaurus
+          - "/docker/appdata/firefox1:/config:rw"
         environment:
-            - NODE_ENV=development
+          - WEB_AUDIO=1
+          - WEB_LISTENING_PORT=80
+        networks:
+            internal_net:
+              ipv4_address: 172.29.0.11
+
+    firefox_u2:
+        image: jlesage/firefox
+        volumes:
+          - "/docker/appdata/firefox2:/config:rw"
+        environment:
+          - WEB_AUDIO=1
+          - WEB_LISTENING_PORT=80
+        networks:
+            internal_net:
+              ipv4_address: 172.29.0.12
+
+    firefox_u3:
+        image: jlesage/firefox
+        volumes:
+          - "/docker/appdata/firefox3:/config:rw"
+        environment:
+          - WEB_AUDIO=1
+          - WEB_LISTENING_PORT=80
+        networks:
+            internal_net:
+              ipv4_address: 172.29.0.13
+
+    firefox_u4:
+        image: jlesage/firefox
+        volumes:
+          - "/docker/appdata/firefox4:/config:rw"
+        environment:
+          - WEB_AUDIO=1
+          - WEB_LISTENING_PORT=80
+        networks:
+            internal_net:
+              ipv4_address: 172.29.0.14
+
+networks:
+  external_net:
+    external: true
+    ipam:
+        config:
+            - subnet: 172.20.0.0/16
+  internal_net:
+    internal: true
+    ipam:
+        config:
+            - subnet: 172.29.0.0/16
